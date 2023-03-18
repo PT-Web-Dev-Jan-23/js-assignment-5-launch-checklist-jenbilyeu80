@@ -1,41 +1,55 @@
 // Write your JavaScript code here!
 
 
-window.addEventListener("load", ()=> {
-    const form = document.querySelector("form");
-    form.addEventListener("submit", (event)=>{
-        event.preventDefault();
+
+window.addEventListener("load", function() {
+
+    let listedPlanets;
+    listedPlanetsResponse = myFetch();
+    listedPlanetsResponse.then(function (result) {
+        listedPlanets = result;
+        console.log(listedPlanets);
+    }).then(function () {
+        console.log(listedPlanets);
+     let planetPicked = pickPlanet(listedPlanets);
  
-        let pilot = document.querySelector("input[name=pilotName]").value;
-        let copilot = document.querySelector("input[name=copilotName]").value;
-        let fuelLevel = document.querySelector("input[name=fuelLevel]").value;
-        let cargoLevel = document.querySelector("input[name=cargoMass]").value;
-        let list = document.getElementById('faultyItems');
-
-       
-        formSubmission(document,list,pilot,copilot,fuelLevel,cargoLevel);
+ addDestinationInfo(document, planetPicked.name, planetPicked.diameter, planetPicked.star, planetPicked.distance, planetPicked.moons, planetPicked.image);
+ 
     })
-
-   let listedPlanets;
-   let listedPlanetsResponse = myFetch();
-   listedPlanetsResponse.then(function (result) {
-       listedPlanets = result;
-       console.log(listedPlanets);
-   }).then(function () {
-       console.log(listedPlanets);
-       
-       let planet = pickPlanet(listedPlanets);
-       let name = planet.name;
-       let diameter = planet.diameter;
-       let star = planet.star;
-       let distance = planet.distance;
-       let imageUrl = planet.image;
-       let moons = planet.moons;
-       addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl);
-    })
-   
-}
-);
-
-
-
+    
+ let list = document.getElementById("faultyItems");
+ 
+ list.style.visibility = "hidden";
+ let form = document.querySelector("Form");
+ 
+ form.addEventListener("submit", function(event){
+     event.preventDefault();
+     let pilotInfo = document.querySelector("input[name=pilotName]");
+     let pilot = pilotInfo.value;
+ 
+     let copilotInfo = document.querySelector("input[name=copilotName]");
+     let copilot = copilotInfo.value;
+ 
+     let fuelLevelInfo = document.querySelector("input[name=fuelLevel]");
+     let fuelLevel = Number(fuelLevelInfo.value);
+ 
+     let cargoMassInfo = document.querySelector("input[name=cargoMass]");
+     let cargoLevel = Number(cargoMassInfo.value);
+ 
+     
+ 
+ 
+     formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel);
+ });
+ 
+ 
+ 
+ 
+ });
+ 
+ module.exports.addDestinationInfo = addDestinationInfo;
+ module.exports.validateInput = validateInput;
+ module.exports.formSubmission = formSubmission;
+ module.exports.pickPlanet = pickPlanet; 
+ module.exports.myFetch = myFetch;
+ 
